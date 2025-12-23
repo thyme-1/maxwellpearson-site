@@ -20,13 +20,24 @@
   --shadow: 0 14px 40px rgba(0,0,0,.45);
   --radius: 18px;
 
-  /* Layout: section-level containers (no single centered column) */
+  /*
+    Layout system (single source of truth)
+    - `.container` sets max width + responsive horizontal padding
+    - `.section` sets consistent vertical rhythm
+    - `.grid` provides a shared 12-column grid
+  */
   --content-max: 1320px; /* ~1200–1400px range */
-  --gutter: clamp(16px, 3.2vw, 40px); /* base side padding */
-  --gutter-lg: clamp(22px, 4.6vw, 64px); /* extra breathing room on wide screens */
+  --gutter: clamp(16px, 3.2vw, 44px);
 
-  /* Desktop-only subtle “spatial” shifts */
-  --shift: clamp(10px, 1.6vw, 26px);
+  /* Spacing scale (8pt-ish rhythm) */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 48px;
+  --space-6: 64px;
+
+  --section-y: clamp(32px, 4.6vw, 56px);
   --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
@@ -72,17 +83,29 @@ a:hover{ text-decoration: none; }
 /* Section-level container system (replaces rigid centered wrapper) */
 .section{
   position: relative;
-  padding: clamp(22px, 3.8vw, 42px) 0;
+  padding: var(--section-y) 0;
 }
-.section-inner{
+.section.hero{
+  padding-top: calc(var(--section-y) + var(--space-2));
+  padding-bottom: var(--space-3);
+}
+
+.container{
   max-width: var(--content-max);
   margin: 0 auto;
   padding: 0 var(--gutter);
 }
-@media (min-width: 1100px){
-  .section-inner{ padding: 0 var(--gutter-lg); }
-  .section-inner.shift-left{ transform: translateX(calc(var(--shift) * -1)); }
-  .section-inner.shift-right{ transform: translateX(var(--shift)); }
+/* Back-compat alias (older markup): prefer `.container` going forward */
+.section-inner{ max-width: var(--content-max); margin: 0 auto; padding: 0 var(--gutter); }
+
+/* Shared 12-col grid */
+.grid{
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+@media (min-width: 900px){
+  .grid{ gap: var(--space-3); }
 }
 
 /* Full-bleed section accents (edge-to-edge backgrounds / dividers) */
@@ -105,7 +128,7 @@ a:hover{ text-decoration: none; }
 .divider{
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent);
-  margin: clamp(18px, 3vw, 30px) 0;
+  margin: var(--space-4) 0;
 }
 
 header.site-header{
@@ -125,9 +148,6 @@ header.site-header{
   padding: 14px var(--gutter);
   max-width: var(--content-max);
   margin: 0 auto;
-}
-@media (min-width: 1100px){
-  .nav{ padding-left: var(--gutter-lg); padding-right: var(--gutter-lg); }
 }
 
 .brand{
@@ -193,13 +213,14 @@ header.site-header{
 main{ display: block; }
 
 .hero{
-  padding: clamp(34px, 6vw, 76px) 0 clamp(10px, 2vw, 18px);
+  padding: 0; /* handled by `.section.hero` */
 }
-.hero-grid{
-  display: grid;
-  grid-template-columns: 1.1fr .9fr;
-  gap: clamp(18px, 3.2vw, 32px);
-  align-items: start;
+.grid--hero{ align-items: start; }
+.grid--hero > :first-child{ grid-column: 1 / -1; }
+.grid--hero > :last-child{ grid-column: 1 / -1; }
+@media (min-width: 900px){
+  .grid--hero > :first-child{ grid-column: 1 / span 7; }
+  .grid--hero > :last-child{ grid-column: 8 / span 5; }
 }
 
 .kicker{
@@ -231,8 +252,8 @@ h1{
 .cta-row{
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 12px;
+  gap: var(--space-1);
+  margin-top: var(--space-1);
 }
 
 .btn{
@@ -327,10 +348,11 @@ h1{
 section{ display: block; }
 .section-title{
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: 14px;
-  margin: 0 0 14px;
+  gap: var(--space-1);
+  margin: 0 0 var(--space-2);
 }
 .section-title h2{
   margin: 0;
@@ -343,12 +365,18 @@ section{ display: block; }
   font-size: 13px;
 }
 
-.cards{
-  display: grid;
-  gap: 14px;
+.cards{ display: grid; gap: var(--space-2); } /* legacy: prefer `.grid grid--cards` */
+.grid--cards > .card{ grid-column: 1 / -1; }
+@media (min-width: 700px){
+  .grid--cards > .card{ grid-column: span 6; }
+}
+@media (min-width: 1024px){
+  .grid--cards > .card{ grid-column: span 4; }
 }
 
 .card{
+  display: flex;
+  flex-direction: column;
   border-radius: var(--radius);
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(255,255,255,.05);
@@ -379,7 +407,8 @@ section{ display: block; }
   font-size: 14px;
 }
 .card .cta{
-  margin-top: 14px;
+  margin-top: auto;
+  padding-top: var(--space-2);
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -395,10 +424,12 @@ section{ display: block; }
   border-color: rgba(255,255,255,.10);
 }
 
-.about{
-  display: grid;
-  grid-template-columns: 1.15fr .85fr;
-  gap: 14px;
+.about{ display: grid; gap: var(--space-2); } /* legacy: prefer `.grid grid--about` */
+.grid--about > :first-child{ grid-column: 1 / -1; }
+.grid--about > :last-child{ grid-column: 1 / -1; }
+@media (min-width: 900px){
+  .grid--about > :first-child{ grid-column: 1 / span 7; }
+  .grid--about > :last-child{ grid-column: 8 / span 5; }
 }
 .panel{
   border-radius: var(--radius);
@@ -458,31 +489,6 @@ footer{
 }
 
 @media (max-width: 900px){
-  .hero-grid{ grid-template-columns: 1fr; }
-  .cards{ grid-template-columns: 1fr; }
-  .about{ grid-template-columns: 1fr; }
   header.site-header{ position: sticky; }
-}
-
-/* Desktop-enhanced asymmetry / wider layouts */
-@media (min-width: 901px){
-  .cards{
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: 16px;
-  }
-  /* A subtle, intentional rhythm (less “template”, more spatial) */
-  .cards > .card:nth-child(1){ grid-column: 1 / span 5; }
-  .cards > .card:nth-child(2){ grid-column: 6 / span 4; margin-top: 10px; }
-  .cards > .card:nth-child(3){ grid-column: 10 / span 3; margin-top: 24px; }
-
-  .about{
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: 16px;
-  }
-  .about > :first-child{ grid-column: 1 / span 7; }
-  .about > :last-child{ grid-column: 8 / span 5; margin-top: 10px; }
-
-  /* Let the hero panel “breathe” into the margin slightly */
-  .hero-card{ margin-right: calc(var(--shift) * -1); }
 }
 
