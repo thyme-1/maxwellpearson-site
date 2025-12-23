@@ -20,8 +20,13 @@
   --shadow: 0 14px 40px rgba(0,0,0,.45);
   --radius: 18px;
 
-  --max: 1080px;
-  --pad: clamp(16px, 3vw, 28px);
+  /* Layout: section-level containers (no single centered column) */
+  --content-max: 1320px; /* ~1200–1400px range */
+  --gutter: clamp(16px, 3.2vw, 40px); /* base side padding */
+  --gutter-lg: clamp(22px, 4.6vw, 64px); /* extra breathing room on wide screens */
+
+  /* Desktop-only subtle “spatial” shifts */
+  --shift: clamp(10px, 1.6vw, 26px);
   --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
@@ -38,6 +43,7 @@ body{
     radial-gradient(700px 500px at 55% 105%, rgba(139,92,246,.16), transparent 55%),
     var(--bg);
   line-height: 1.55;
+  overflow-x: hidden; /* allow intentional “breakouts” without horizontal scroll */
 }
 
 a{ color: inherit; text-decoration: none; }
@@ -63,10 +69,43 @@ a:hover{ text-decoration: none; }
   outline-offset: 2px;
 }
 
-.wrap{
-  max-width: var(--max);
+/* Section-level container system (replaces rigid centered wrapper) */
+.section{
+  position: relative;
+  padding: clamp(22px, 3.8vw, 42px) 0;
+}
+.section-inner{
+  max-width: var(--content-max);
   margin: 0 auto;
-  padding: var(--pad);
+  padding: 0 var(--gutter);
+}
+@media (min-width: 1100px){
+  .section-inner{ padding: 0 var(--gutter-lg); }
+  .section-inner.shift-left{ transform: translateX(calc(var(--shift) * -1)); }
+  .section-inner.shift-right{ transform: translateX(var(--shift)); }
+}
+
+/* Full-bleed section accents (edge-to-edge backgrounds / dividers) */
+.bleed{
+  position: relative;
+}
+.bleed::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(900px 320px at 20% 0%, rgba(139,92,246,.16), transparent 60%),
+    radial-gradient(800px 360px at 90% 10%, rgba(34,211,238,.12), transparent 58%),
+    linear-gradient(to bottom, rgba(255,255,255,.035), rgba(255,255,255,0));
+  pointer-events: none;
+  z-index: 0;
+}
+.bleed > *{ position: relative; z-index: 1; }
+
+.divider{
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent);
+  margin: clamp(18px, 3vw, 30px) 0;
 }
 
 header.site-header{
@@ -83,9 +122,12 @@ header.site-header{
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  padding: 14px var(--pad);
-  max-width: var(--max);
+  padding: 14px var(--gutter);
+  max-width: var(--content-max);
   margin: 0 auto;
+}
+@media (min-width: 1100px){
+  .nav{ padding-left: var(--gutter-lg); padding-right: var(--gutter-lg); }
 }
 
 .brand{
@@ -151,12 +193,12 @@ header.site-header{
 main{ display: block; }
 
 .hero{
-  padding: clamp(34px, 6vw, 70px) 0 10px;
+  padding: clamp(34px, 6vw, 76px) 0 clamp(10px, 2vw, 18px);
 }
 .hero-grid{
   display: grid;
-  grid-template-columns: 1.25fr .75fr;
-  gap: clamp(18px, 3vw, 28px);
+  grid-template-columns: 1.1fr .9fr;
+  gap: clamp(18px, 3.2vw, 32px);
   align-items: start;
 }
 
@@ -282,9 +324,7 @@ h1{
   text-align: right;
 }
 
-section{
-  padding: 26px 0;
-}
+section{ display: block; }
 .section-title{
   display: flex;
   align-items: baseline;
@@ -305,7 +345,6 @@ section{
 
 .cards{
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
 }
 
@@ -423,5 +462,27 @@ footer{
   .cards{ grid-template-columns: 1fr; }
   .about{ grid-template-columns: 1fr; }
   header.site-header{ position: sticky; }
+}
+
+/* Desktop-enhanced asymmetry / wider layouts */
+@media (min-width: 901px){
+  .cards{
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 16px;
+  }
+  /* A subtle, intentional rhythm (less “template”, more spatial) */
+  .cards > .card:nth-child(1){ grid-column: 1 / span 5; }
+  .cards > .card:nth-child(2){ grid-column: 6 / span 4; margin-top: 10px; }
+  .cards > .card:nth-child(3){ grid-column: 10 / span 3; margin-top: 24px; }
+
+  .about{
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .about > :first-child{ grid-column: 1 / span 7; }
+  .about > :last-child{ grid-column: 8 / span 5; margin-top: 10px; }
+
+  /* Let the hero panel “breathe” into the margin slightly */
+  .hero-card{ margin-right: calc(var(--shift) * -1); }
 }
 
