@@ -397,6 +397,41 @@ section{ display: block; }
   letter-spacing: .08em;
   text-transform: uppercase;
 }
+.card-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+.badge{
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.badge.live{
+  border-color: rgba(52,211,153,.22);
+  background: rgba(52,211,153,.08);
+  color: rgba(214,255,238,.88);
+}
+.badge.progress{
+  border-color: rgba(34,211,238,.22);
+  background: rgba(34,211,238,.08);
+  color: rgba(219,252,255,.88);
+}
+.badge.concept{
+  border-color: rgba(139,92,246,.22);
+  background: rgba(139,92,246,.10);
+  color: rgba(240,234,255,.9);
+}
 .card h3{
   margin: 10px 0 8px;
   font-size: 16px;

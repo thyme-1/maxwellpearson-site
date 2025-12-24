@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Human Fund 2025 — Impact Report</title>
+    <meta
+      name="description"
+      content="Human Fund 2025: a completely serious annual impact report for totally normal contributions."
+    />
+    <meta name="robots" content="index,follow" />
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+
+    <!-- Keep site styling consistent, then add project-specific rules -->
+    <link rel="stylesheet" href="../../css/styles.css" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header" role="banner">
+      <nav class="nav" aria-label="Primary">
+        <a class="brand" href="../../">
+          <span class="mark" aria-hidden="true"></span>
+          <span>
+            <span class="name">Maxwell Pearson</span>
+            <span class="sub">projects</span>
+          </span>
+        </a>
+
+        <div class="nav-links">
+          <a class="chip primary" href="../">Projects</a>
+          <a class="chip" href="https://github.com/thyme-1" rel="noreferrer">GitHub</a>
+          <a class="chip" href="mailto:mp13967@outlook.com">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <section class="section bleed">
+        <div class="container">
+          <div class="section-title fade-in">
+            <h2>Human Fund 2025</h2>
+            <p>Annual Impact Report (highly audited, deeply actionable).</p>
+          </div>
+
+          <p class="bio fade-in" style="margin: 0 0 var(--space-3); max-width: 76ch">
+            Welcome to the Human Fund 2025 annual impact report portal. Please enter your name to
+            retrieve your contribution summary and the measurable outcomes it enabled this year.
+          </p>
+
+          <div class="grid grid--hero">
+            <form class="panel fade-in hf-form" id="hf-form" novalidate>
+              <label class="hf-label" for="hf-name">Contributor name</label>
+              <div class="hf-row">
+                <input
+                  class="hf-input"
+                  id="hf-name"
+                  name="name"
+                  type="text"
+                  inputmode="text"
+                  autocomplete="name"
+                  placeholder="e.g., Alex"
+                  required
+                />
+                <button class="btn primary" type="submit">Generate report</button>
+              </div>
+              <p class="hf-help" id="hf-help">
+                Tip: Try “Alex”, “Sam”, “Taylor”, or “Jordan” (demo data).
+              </p>
+            </form>
+
+            <section
+              class="panel fade-in hf-results"
+              id="hf-results"
+              aria-live="polite"
+              aria-label="Impact report results"
+            >
+              <p class="hf-muted">Your report will appear here.</p>
+            </section>
+          </div>
+
+          <div class="divider" aria-hidden="true"></div>
+
+          <p class="fade-in" style="margin: 0">
+            <a class="chip" href="../">Back to Projects</a>
+            <a class="chip" href="../../">Back to main site</a>
+          </p>
+        </div>
+      </section>
+
+      <footer class="section" role="contentinfo">
+        <div class="container">
+          <div class="footer-row fade-in">
+            <div><span id="year">2025</span> Human Fund 2025</div>
+            <div class="social" aria-label="Links">
+              <a href="../" aria-label="Projects">Projects</a>
+              <a href="../../" aria-label="Home">Home</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </main>
+
+    <script src="../../js/main.js"></script>
+    <script src="./script.js"></script>
+    <script>
+      document.getElementById("year").textContent = String(new Date().getFullYear());
+    </script>
+  </body>
+</html>
+

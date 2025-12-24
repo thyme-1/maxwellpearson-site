@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Projects — Maxwell Pearson</title>
+    <meta
+      name="description"
+      content="A selection of creative and technical projects by Maxwell Pearson."
+    />
+    <meta name="robots" content="index,follow" />
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header" role="banner">
+      <nav class="nav" aria-label="Primary">
+        <a class="brand" href="../">
+          <span class="mark" aria-hidden="true"></span>
+          <span>
+            <span class="name">Maxwell Pearson</span>
+            <span class="sub">creative technologist</span>
+          </span>
+        </a>
+
+        <div class="nav-links">
+          <a class="chip primary" href="./">Projects</a>
+          <a class="chip" href="../#about">About / Resume</a>
+          <a class="chip" href="https://github.com/thyme-1" rel="noreferrer">GitHub</a>
+          <a class="chip" href="mailto:mp13967@outlook.com">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <section class="section bleed">
+        <div class="container">
+          <div class="section-title fade-in">
+            <h2>Projects</h2>
+            <p>Creative + technical experiments (some are still incubating).</p>
+          </div>
+
+          <p class="bio fade-in" style="margin: 0 0 var(--space-3); max-width: 72ch">
+            These are small systems, interactive jokes, prototypes, and interface experiments. Some
+            are live; others are concepts waiting for their moment.
+          </p>
+
+          <div class="grid grid--cards fade-in" aria-label="Project list">
+            <a class="card" href="./human-fund-2025/">
+              <div class="card-head">
+                <div class="eyebrow">Interactive • Satire</div>
+                <span class="badge live">Live</span>
+              </div>
+              <h3>Human Fund 2025</h3>
+              <p>Enter your name to receive an overly-serious corporate impact report.</p>
+              <span class="cta">Open →</span>
+            </a>
+
+            <div class="card" aria-disabled="true">
+              <div class="card-head">
+                <div class="eyebrow">Tooling • Prototype</div>
+                <span class="badge progress">In progress</span>
+              </div>
+              <h3>Project Placeholder #1</h3>
+              <p>Coming soon. A build that’s currently more idea than artifact.</p>
+              <span class="cta" style="color: rgba(255,255,255,.55)">Not published yet</span>
+            </div>
+
+            <div class="card" aria-disabled="true">
+              <div class="card-head">
+                <div class="eyebrow">Concept</div>
+                <span class="badge concept">Concept</span>
+              </div>
+              <h3>Project Placeholder #2</h3>
+              <p>In the pipeline: something visual, something interactive, something surprising.</p>
+              <span class="cta" style="color: rgba(255,255,255,.55)">Not published yet</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="section" role="contentinfo">
+        <div class="container">
+          <div class="footer-row fade-in">
+            <div><span id="year">2025</span> Maxwell Pearson</div>
+            <div class="social" aria-label="Social links">
+              <a href="../" aria-label="Home">Home</a>
+              <a href="https://github.com/thyme-1" rel="noreferrer" aria-label="GitHub">GitHub</a>
+              <a href="mailto:mp13967@outlook.com" aria-label="Email">Email</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </main>
+
+    <script src="../js/main.js"></script>
+    <script>
+      document.getElementById("year").textContent = String(new Date().getFullYear());
+    </script>
+  </body>
+</html>
+

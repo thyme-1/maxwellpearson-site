@@ -1,0 +1,77 @@
+/*
+  Human Fund 2025 — project-specific styles
+  Keeps the main site's visual language, adds “corporate portal” form polish.
+*/
+
+.hf-form{
+  display: grid;
+  gap: var(--space-2);
+}
+
+.hf-label{
+  font-family: var(--mono);
+  color: var(--faint);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.hf-row{
+  display: grid;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+@media (min-width: 700px){
+  .hf-row{
+    grid-template-columns: 1fr auto;
+  }
+}
+
+.hf-input{
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.18);
+  color: var(--text);
+  font: inherit;
+}
+.hf-input::placeholder{ color: rgba(255,255,255,.42); }
+.hf-input:focus-visible{
+  outline: 2px solid rgba(34,211,238,.85);
+  outline-offset: 2px;
+}
+
+.hf-help{
+  margin: 0;
+  color: var(--faint);
+  font-size: 13px;
+}
+
+.hf-results{
+  min-height: 220px;
+}
+
+.hf-muted{
+  margin: 0;
+  color: var(--faint);
+}
+
+.hf-report-title{
+  margin: 0 0 var(--space-1);
+  font-size: 18px;
+}
+
+.hf-amount{
+  font-family: var(--mono);
+  color: rgba(34,211,238,.92);
+  margin: 0 0 var(--space-2);
+}
+
+.hf-list{
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+}
+

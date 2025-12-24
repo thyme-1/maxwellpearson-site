@@ -1,0 +1,57 @@
+{
+  "alex": {
+    "causeTitle": "Strategic Synergy Enablement Initiative",
+    "amount": 2500,
+    "stats": [
+      "Provisioned 14.3 units of cross-functional optimism",
+      "Reduced existential risk by 0.6% (statistically confident-ish)",
+      "Unlocked 3 new stakeholder smiles per sprint"
+    ]
+  },
+  "sam": {
+    "causeTitle": "Community Wellbeing Alignment Program",
+    "amount": 1800,
+    "stats": [
+      "Deployed 22 feel-good deliverables to production",
+      "Achieved 97th percentile gratitude throughput",
+      "Converted coffee into impact at a 1:1 ratio"
+    ]
+  },
+  "taylor": {
+    "causeTitle": "Innovation Through Mild Discomfort Fund",
+    "amount": 4200,
+    "stats": [
+      "Sponsored 9 courageous brainstorm sessions",
+      "Increased idea velocity by 12% (measured in vibes)",
+      "Prevented 1 major meeting from becoming a minor meeting"
+    ]
+  },
+  "jordan": {
+    "causeTitle": "Operational Excellence & Snack Availability",
+    "amount": 1200,
+    "stats": [
+      "Improved snack uptime to 99.95%",
+      "Introduced 5 new flavors of accountability",
+      "Raised morale by 2 points on the corporate feelings index"
+    ]
+  },
+  "casey": {
+    "causeTitle": "Enterprise Empathy Modernization",
+    "amount": 3100,
+    "stats": [
+      "Refactored 6 legacy apologies into modern apologies",
+      "Cut passive-aggressive latency by 18ms",
+      "Migrated 1 entire team to a shared understanding"
+    ]
+  },
+  "riley": {
+    "causeTitle": "Sustainable Meeting Reduction Strategy",
+    "amount": 900,
+    "stats": [
+      "Eliminated 4 recurring meetings (ceremonially)",
+      "Recovered 3.2 hours of weekly life",
+      "Improved calendar hygiene by 41%"
+    ]
+  }
+}
+
