@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
+    <div class="hf-lights" aria-hidden="true"></div>
     <a class="hf-skip" href="#main">Skip to report portal</a>
 
     <header class="hf-topbar" role="banner">
@@ -30,6 +31,9 @@
         <div class="hf-topbar-right" aria-label="Internal tags">
           <span class="hf-pill">CONFIDENTIAL / INTERNAL</span>
           <span class="hf-pill" id="hf-timestamp">Timestamp: —</span>
+          <button class="hf-control" type="button" id="hf-snow-toggle" aria-pressed="true">
+            Snow: ON
+          </button>
         </div>
       </div>
     </header>
@@ -93,8 +97,6 @@
           <div class="hf-container hf-footer-inner">
             <div class="hf-footer-left">© <span id="hf-year">2025</span> Human Fund Analytics</div>
             <div class="hf-footer-right">
-              <button class="hf-link hf-toggle" type="button" id="hf-snow-toggle">Snow: On</button>
-              <span class="hf-dot" aria-hidden="true">•</span>
               <a class="hf-link" href="../../">Return to Portfolio</a>
               <span class="hf-dot" aria-hidden="true">•</span>
               <a class="hf-link" href="../">Back to Projects</a>
