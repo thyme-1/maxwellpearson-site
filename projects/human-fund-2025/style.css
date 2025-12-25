@@ -52,48 +52,67 @@ body{
   line-height: 1.55;
 }
 
-/* Decorative, non-interactive lights line (never overlaps content) */
-.hf-lights{
+/* Christmas lights: real bulbs in a decorative container */
+.xmas-lights{
   position: fixed;
   left: 0;
   right: 0;
   top: 0;
-  height: 14px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
   pointer-events: none;
   z-index: 4;
-  /* Subtle “wire” + repeating bulbs with slightly uneven spacing in each tile */
-  background:
-    linear-gradient(to bottom, rgba(255,255,255,.10), rgba(255,255,255,0)) 0 0 / 100% 14px no-repeat,
-    linear-gradient(to right, rgba(255,255,255,.10), rgba(255,255,255,.10)) 0 8px / 100% 1px no-repeat,
-    radial-gradient(circle 4px at 14px 8px, rgba(255,243,224,.55), rgba(255,243,224,0) 60%),
-    radial-gradient(circle 4px at 46px 7px, rgba(31,75,58,.55), rgba(31,75,58,0) 60%),
-    radial-gradient(circle 4px at 78px 8px, rgba(107,29,43,.50), rgba(107,29,43,0) 60%),
-    radial-gradient(circle 4px at 112px 7px, rgba(255,243,224,.52), rgba(255,243,224,0) 60%),
-    radial-gradient(circle 4px at 146px 8px, rgba(31,75,58,.48), rgba(31,75,58,0) 60%),
-    radial-gradient(circle 4px at 182px 7px, rgba(255,243,224,.50), rgba(255,243,224,0) 60%),
-    radial-gradient(circle 4px at 214px 8px, rgba(107,29,43,.46), rgba(107,29,43,0) 60%);
-  background-size: 240px 14px, 100% 14px, 240px 14px, 240px 14px, 240px 14px, 240px 14px, 240px 14px, 240px 14px, 240px 14px;
-  background-repeat: no-repeat, no-repeat, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x;
-  opacity: .55;
-  filter: saturate(.85);
+  opacity: .65;
 }
-.hf-lights::after{
+.xmas-lights::before{
   content: "";
   position: absolute;
-  inset: 0;
-  /* Soft glow pass */
-  background:
-    radial-gradient(circle 5px at 14px 8px, rgba(255,243,224,.20), transparent 70%),
-    radial-gradient(circle 5px at 46px 7px, rgba(31,75,58,.18), transparent 70%),
-    radial-gradient(circle 5px at 78px 8px, rgba(107,29,43,.16), transparent 70%),
-    radial-gradient(circle 5px at 112px 7px, rgba(255,243,224,.18), transparent 70%),
-    radial-gradient(circle 5px at 146px 8px, rgba(31,75,58,.16), transparent 70%),
-    radial-gradient(circle 5px at 182px 7px, rgba(255,243,224,.16), transparent 70%),
-    radial-gradient(circle 5px at 214px 8px, rgba(107,29,43,.14), transparent 70%);
-  background-size: 240px 14px;
-  background-repeat: repeat-x;
-  opacity: .55;
-  filter: blur(3px);
+  left: 0;
+  right: 0;
+  top: 12px;
+  height: 1px;
+  background: rgba(255,255,255,.10);
+}
+.xmas-lights .bulb{
+  position: relative;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  opacity: .72;
+  filter: saturate(.85);
+  box-shadow:
+    0 0 10px rgba(255,255,255,.14),
+    0 0 22px rgba(255,255,255,.06);
+}
+.xmas-lights .bulb.warm{
+  background: rgba(255,243,224,.55);
+  box-shadow:
+    0 0 10px rgba(255,243,224,.18),
+    0 0 24px rgba(255,243,224,.08);
+}
+.xmas-lights .bulb.green{
+  background: rgba(31,75,58,.60);
+  box-shadow:
+    0 0 10px rgba(31,75,58,.16),
+    0 0 24px rgba(31,75,58,.07);
+}
+.xmas-lights .bulb.burgundy{
+  background: rgba(107,29,43,.58);
+  box-shadow:
+    0 0 10px rgba(107,29,43,.14),
+    0 0 24px rgba(107,29,43,.06);
+}
+/* Slight unevenness (natural string feel) */
+.xmas-lights .bulb:nth-child(3n){ transform: translateY(-1px); }
+.xmas-lights .bulb:nth-child(4n){ transform: translateY(1px); }
+.xmas-lights .bulb:nth-child(5n){ transform: translateY(-2px); }
+.xmas-lights .bulb:nth-child(7n){ transform: translateY(2px); }
+@media (max-width: 520px){
+  /* Fewer bulbs on small screens */
+  .xmas-lights .bulb:nth-child(n+13){ display: none; }
 }
 
 /* Liminal overlays: subtle noise + vignette */
@@ -149,7 +168,7 @@ a{ color: inherit; }
 
 .hf-topbar{
   position: sticky;
-  top: 14px; /* sits below decorative lights */
+  top: 22px; /* sits below decorative lights */
   z-index: 3;
   background: rgba(11,15,20,.78);
   backdrop-filter: blur(10px);
@@ -440,7 +459,7 @@ a{ color: inherit; }
   letter-spacing: .12em;
   text-transform: uppercase;
   font-size: 12px;
-  color: rgba(18,19,22,.82);
+  color: rgba(255,255,255,.78);
 }
 .hf-chart{
   width: 100%;
@@ -503,32 +522,14 @@ a{ color: inherit; }
 
 /* Footer toggle button should look like a link but behave like a control */
 /* Snow overlay */
-.hf-snow{
+#snow-canvas{
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 2; /* above background + overlays, below header/content */
-  opacity: .75;
-}
-.hf-snowflake{
-  position: absolute;
-  top: -12vh;
-  left: 0;
-  width: var(--size, 3px);
-  height: var(--size, 3px);
-  border-radius: 50%;
-  background: rgba(255,255,255,.75);
-  box-shadow: 0 0 12px rgba(255,255,255,.26);
-  transform: translateX(var(--x, 0));
-  animation: hf-snow-fall var(--dur, 10s) linear var(--delay, 0s) infinite;
-}
-@keyframes hf-snow-fall{
-  0%{ transform: translate(var(--x, 0), -10vh); opacity: 0; }
-  10%{ opacity: .9; }
-  100%{ transform: translate(calc(var(--x, 0) + var(--drift, 18px)), 112vh); opacity: 0; }
+  z-index: 2; /* above background, below UI content */
 }
 @media (prefers-reduced-motion: reduce){
-  .hf-snow{ display: none; }
+  #snow-canvas{ display: none; }
 }
 
 /* Supplemental media (attachments) */

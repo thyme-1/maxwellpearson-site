@@ -11,8 +11,9 @@
   const input = document.getElementById("hf-name");
   const results = document.getElementById("hf-results");
   const resetBtn = document.getElementById("hf-reset");
-  const snowRoot = document.getElementById("hf-snow");
   const snowToggle = document.getElementById("hf-snow-toggle");
+  const snowCanvas = document.getElementById("snow-canvas");
+  const snowCtx = snowCanvas?.getContext?.("2d");
 
   /**
    * Data shape:
@@ -464,58 +465,122 @@
     }
   }
 
-  /* Snow overlay (optional, subtle, reduced-motion aware) */
+  /* Snow overlay (canvas, requestAnimationFrame) */
   const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-  let snowEnabled = !prefersReduced; // default On unless reduced-motion
-  let snowFlakes = [];
 
-  function updateSnowToggleLabel() {
+  /** @type {{x:number,y:number,r:number,vy:number,vx:number,a:number}[]} */
+  let flakes = [];
+  let rafId = 0;
+  let snowEnabled = !prefersReduced; // default ON (unless reduced-motion)
+  let dpr = 1;
+  let cw = 0;
+  let ch = 0;
+
+  function computeFlakeCount(widthPx) {
+    // ~80–140 depending on viewport width
+    const n = Math.round(80 + Math.min(60, (widthPx / 1200) * 60));
+    return Math.max(80, Math.min(140, n));
+  }
+
+  function resizeCanvas() {
+    if (!snowCanvas || !snowCtx) return;
+    dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+    cw = Math.floor(window.innerWidth);
+    ch = Math.floor(window.innerHeight);
+    snowCanvas.width = Math.floor(cw * dpr);
+    snowCanvas.height = Math.floor(ch * dpr);
+    snowCanvas.style.width = `${cw}px`;
+    snowCanvas.style.height = `${ch}px`;
+    snowCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function makeFlake() {
+    const r = 1.5 + Math.random() * 2.0; // 1.5–3.5
+    const a = 0.25 + Math.random() * 0.40; // 0.25–0.65
+    const vy = 0.25 + Math.random() * 0.55; // slow fall
+    const vx = (Math.random() - 0.5) * 0.25; // slight drift
+    return {
+      x: Math.random() * cw,
+      y: Math.random() * ch,
+      r,
+      vy,
+      vx,
+      a
+    };
+  }
+
+  function resetFlakes() {
+    if (!snowCanvas || !snowCtx) return;
+    const count = computeFlakeCount(cw || window.innerWidth || 1024);
+    flakes = Array.from({ length: count }, () => makeFlake());
+  }
+
+  function clearCanvas() {
+    if (!snowCanvas || !snowCtx) return;
+    snowCtx.clearRect(0, 0, cw, ch);
+  }
+
+  function stepSnow() {
+    if (!snowEnabled || prefersReduced) return;
+    if (!snowCanvas || !snowCtx) return;
+
+    snowCtx.clearRect(0, 0, cw, ch);
+    snowCtx.fillStyle = "rgba(255,255,255,1)";
+
+    for (const f of flakes) {
+      f.y += f.vy;
+      f.x += f.vx + Math.sin((f.y / 60) + f.r) * 0.12; // tiny sideways wobble
+
+      if (f.y - f.r > ch) {
+        f.y = -10 - Math.random() * 40;
+        f.x = Math.random() * cw;
+      }
+      if (f.x < -20) f.x = cw + 20;
+      if (f.x > cw + 20) f.x = -20;
+
+      snowCtx.globalAlpha = f.a;
+      snowCtx.beginPath();
+      snowCtx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+      snowCtx.fill();
+    }
+
+    snowCtx.globalAlpha = 1;
+    rafId = window.requestAnimationFrame(stepSnow);
+  }
+
+  function updateSnowToggleUi() {
     if (!snowToggle) return;
     if (prefersReduced) {
-      snowToggle.textContent = "Snow: OFF";
+      snowToggle.textContent = "SNOW: OFF";
       snowToggle.setAttribute("aria-disabled", "true");
       snowToggle.disabled = true;
       snowToggle.setAttribute("aria-pressed", "false");
       return;
     }
-    snowToggle.textContent = `Snow: ${snowEnabled ? "ON" : "OFF"}`;
+    snowToggle.textContent = `SNOW: ${snowEnabled ? "ON" : "OFF"}`;
     snowToggle.setAttribute("aria-pressed", snowEnabled ? "true" : "false");
   }
 
-  function clearSnow() {
-    if (!snowRoot) return;
-    snowFlakes.forEach((el) => el.remove());
-    snowFlakes = [];
-  }
+  function setSnowEnabled(enabled) {
+    snowEnabled = Boolean(enabled) && !prefersReduced;
+    updateSnowToggleUi();
 
-  function startSnow() {
-    if (!snowRoot || !snowEnabled || prefersReduced) return;
-    clearSnow();
+    if (!snowCanvas || !snowCtx) return;
 
-    const count = 34; // visible, but still restrained
-    for (let i = 0; i < count; i++) {
-      const flake = document.createElement("span");
-      flake.className = "hf-snowflake";
-
-      // Use CSS vars for randomization; keeps it low-cost.
-      const x = Math.random() * 100;
-      const size = 2 + Math.random() * 2.2; // 2–4.2px (clearly visible)
-      const dur = 18 + Math.random() * 18; // slower fall
-      const delay = -Math.random() * dur;
-      const drift = (Math.random() - 0.5) * 36;
-      const opacity = 0.35 + Math.random() * 0.35;
-
-      flake.style.left = `${x}vw`;
-      flake.style.setProperty("--size", `${size}px`);
-      flake.style.setProperty("--dur", `${dur}s`);
-      flake.style.setProperty("--delay", `${delay}s`);
-      flake.style.setProperty("--drift", `${drift}px`);
-      flake.style.opacity = String(opacity);
-
-      snowRoot.appendChild(flake);
-      snowFlakes.push(flake);
+    if (!snowEnabled) {
+      if (rafId) window.cancelAnimationFrame(rafId);
+      rafId = 0;
+      clearCanvas();
+      return;
     }
+
+    resizeCanvas();
+    resetFlakes();
+    if (!rafId) rafId = window.requestAnimationFrame(stepSnow);
   }
+
+  // Expose for debugging / console control
+  window.setSnowEnabled = setSnowEnabled;
 
   async function loadData() {
     try {
@@ -531,11 +596,7 @@
   resetBtn?.addEventListener("click", resetUi);
 
   snowToggle?.addEventListener("click", () => {
-    if (prefersReduced) return;
-    snowEnabled = !snowEnabled;
-    updateSnowToggleLabel();
-    if (snowEnabled) startSnow();
-    else clearSnow();
+    setSnowEnabled(!snowEnabled);
   });
 
   form?.addEventListener("submit", async (e) => {
@@ -568,7 +629,14 @@
   });
 
   // Init
-  updateSnowToggleLabel();
-  if (snowEnabled) startSnow();
+  updateSnowToggleUi();
+  if (!prefersReduced) {
+    window.addEventListener("resize", () => {
+      if (!snowEnabled) return;
+      resizeCanvas();
+      resetFlakes();
+    });
+  }
+  setSnowEnabled(true);
 })();
 
