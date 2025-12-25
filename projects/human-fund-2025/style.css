@@ -52,6 +52,50 @@ body{
   line-height: 1.55;
 }
 
+/* Decorative, non-interactive lights line (never overlaps content) */
+.hf-lights{
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 14px;
+  pointer-events: none;
+  z-index: 4;
+  /* Subtle “wire” + repeating bulbs with slightly uneven spacing in each tile */
+  background:
+    linear-gradient(to bottom, rgba(255,255,255,.10), rgba(255,255,255,0)) 0 0 / 100% 14px no-repeat,
+    linear-gradient(to right, rgba(255,255,255,.10), rgba(255,255,255,.10)) 0 8px / 100% 1px no-repeat,
+    radial-gradient(circle 4px at 14px 8px, rgba(255,243,224,.55), rgba(255,243,224,0) 60%),
+    radial-gradient(circle 4px at 46px 7px, rgba(31,75,58,.55), rgba(31,75,58,0) 60%),
+    radial-gradient(circle 4px at 78px 8px, rgba(107,29,43,.50), rgba(107,29,43,0) 60%),
+    radial-gradient(circle 4px at 112px 7px, rgba(255,243,224,.52), rgba(255,243,224,0) 60%),
+    radial-gradient(circle 4px at 146px 8px, rgba(31,75,58,.48), rgba(31,75,58,0) 60%),
+    radial-gradient(circle 4px at 182px 7px, rgba(255,243,224,.50), rgba(255,243,224,0) 60%),
+    radial-gradient(circle 4px at 214px 8px, rgba(107,29,43,.46), rgba(107,29,43,0) 60%);
+  background-size: 240px 14px, 100% 14px, 240px 14px, 240px 14px, 240px 14px, 240px 14px, 240px 14px, 240px 14px, 240px 14px;
+  background-repeat: no-repeat, no-repeat, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x;
+  opacity: .55;
+  filter: saturate(.85);
+}
+.hf-lights::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* Soft glow pass */
+  background:
+    radial-gradient(circle 5px at 14px 8px, rgba(255,243,224,.20), transparent 70%),
+    radial-gradient(circle 5px at 46px 7px, rgba(31,75,58,.18), transparent 70%),
+    radial-gradient(circle 5px at 78px 8px, rgba(107,29,43,.16), transparent 70%),
+    radial-gradient(circle 5px at 112px 7px, rgba(255,243,224,.18), transparent 70%),
+    radial-gradient(circle 5px at 146px 8px, rgba(31,75,58,.16), transparent 70%),
+    radial-gradient(circle 5px at 182px 7px, rgba(255,243,224,.16), transparent 70%),
+    radial-gradient(circle 5px at 214px 8px, rgba(107,29,43,.14), transparent 70%);
+  background-size: 240px 14px;
+  background-repeat: repeat-x;
+  opacity: .55;
+  filter: blur(3px);
+}
+
 /* Liminal overlays: subtle noise + vignette */
 body::before{
   content: "";
@@ -80,7 +124,7 @@ body::after{
   opacity: .72;
 }
 
-main, header, footer{ position: relative; z-index: 1; }
+main, header, footer{ position: relative; z-index: 3; }
 
 a{ color: inherit; }
 
@@ -105,7 +149,7 @@ a{ color: inherit; }
 
 .hf-topbar{
   position: sticky;
-  top: 0;
+  top: 14px; /* sits below decorative lights */
   z-index: 3;
   background: rgba(11,15,20,.78);
   backdrop-filter: blur(10px);
@@ -129,8 +173,9 @@ a{ color: inherit; }
 .hf-mark{
   width: 14px;
   height: 14px;
-  border-radius: 3px;
-  background: linear-gradient(135deg, rgba(31,75,58,.95), rgba(107,29,43,.9));
+  border-radius: 999px;
+  background: rgba(255,243,224,.18);
+  border: 1px solid rgba(255,255,255,.14);
   box-shadow: 0 10px 24px rgba(0,0,0,.55);
 }
 .hf-brand-title{
@@ -162,48 +207,32 @@ a{ color: inherit; }
   color: rgba(255,255,255,.78);
 }
 
-/*
-  Premium “string lights” trim
-  - Subtle bulbs with glow, low saturation
-  - Implemented as a pseudo-element so it stays decorative
-*/
-.hf-topbar::after{
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 18px;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 12px 50%, rgba(122,166,182,.75), rgba(122,166,182,0) 55%),
-    radial-gradient(circle at 44px 50%, rgba(31,75,58,.75), rgba(31,75,58,0) 55%),
-    radial-gradient(circle at 76px 50%, rgba(107,29,43,.70), rgba(107,29,43,0) 55%),
-    radial-gradient(circle at 108px 50%, rgba(122,166,182,.65), rgba(122,166,182,0) 55%),
-    radial-gradient(circle at 140px 50%, rgba(31,75,58,.70), rgba(31,75,58,0) 55%);
-  background-size: 160px 18px;
-  background-repeat: repeat-x;
-  filter: blur(.2px);
-  opacity: .38;
+/* Snow toggle: system-like control (header, top-right) */
+.hf-control{
+  appearance: none;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.78);
+  border-radius: 999px;
+  padding: 8px 10px;
+  font-family: var(--hf-mono);
+  font-size: 11px;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  cursor: pointer;
 }
-.hf-topbar::before{
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 18px;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 12px 50%, rgba(122,166,182,.35), transparent 62%),
-    radial-gradient(circle at 44px 50%, rgba(31,75,58,.35), transparent 62%),
-    radial-gradient(circle at 76px 50%, rgba(107,29,43,.32), transparent 62%),
-    radial-gradient(circle at 108px 50%, rgba(122,166,182,.28), transparent 62%),
-    radial-gradient(circle at 140px 50%, rgba(31,75,58,.30), transparent 62%);
-  background-size: 160px 18px;
-  background-repeat: repeat-x;
-  filter: blur(4px);
-  opacity: .28;
+.hf-control[aria-pressed="true"]{
+  border-color: rgba(31,75,58,.35);
+  background: rgba(31,75,58,.16);
+  color: rgba(255,255,255,.86);
+}
+.hf-control[aria-pressed="false"]{
+  border-color: rgba(107,29,43,.25);
+  background: rgba(255,255,255,.04);
+}
+.hf-control:disabled{
+  opacity: .55;
+  cursor: not-allowed;
 }
 
 .hf-shell{
@@ -473,31 +502,23 @@ a{ color: inherit; }
 .hf-dot{ opacity: .55; }
 
 /* Footer toggle button should look like a link but behave like a control */
-.hf-toggle{
-  background: transparent;
-  border: 0;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-}
-
 /* Snow overlay */
 .hf-snow{
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 2; /* above content base, but subtle */
-  opacity: .55;
+  z-index: 2; /* above background + overlays, below header/content */
+  opacity: .75;
 }
 .hf-snowflake{
   position: absolute;
-  top: -10vh;
+  top: -12vh;
   left: 0;
-  width: var(--size, 2px);
-  height: var(--size, 2px);
+  width: var(--size, 3px);
+  height: var(--size, 3px);
   border-radius: 50%;
-  background: rgba(255,255,255,.6);
-  box-shadow: 0 0 10px rgba(255,255,255,.22);
+  background: rgba(255,255,255,.75);
+  box-shadow: 0 0 12px rgba(255,255,255,.26);
   transform: translateX(var(--x, 0));
   animation: hf-snow-fall var(--dur, 10s) linear var(--delay, 0s) infinite;
 }

@@ -472,12 +472,14 @@
   function updateSnowToggleLabel() {
     if (!snowToggle) return;
     if (prefersReduced) {
-      snowToggle.textContent = "Snow: Off";
+      snowToggle.textContent = "Snow: OFF";
       snowToggle.setAttribute("aria-disabled", "true");
       snowToggle.disabled = true;
+      snowToggle.setAttribute("aria-pressed", "false");
       return;
     }
-    snowToggle.textContent = `Snow: ${snowEnabled ? "On" : "Off"}`;
+    snowToggle.textContent = `Snow: ${snowEnabled ? "ON" : "OFF"}`;
+    snowToggle.setAttribute("aria-pressed", snowEnabled ? "true" : "false");
   }
 
   function clearSnow() {
@@ -490,18 +492,18 @@
     if (!snowRoot || !snowEnabled || prefersReduced) return;
     clearSnow();
 
-    const count = 26; // light density
+    const count = 34; // visible, but still restrained
     for (let i = 0; i < count; i++) {
       const flake = document.createElement("span");
       flake.className = "hf-snowflake";
 
       // Use CSS vars for randomization; keeps it low-cost.
       const x = Math.random() * 100;
-      const size = 1 + Math.random() * 2.2;
-      const dur = 10 + Math.random() * 10;
+      const size = 2 + Math.random() * 2.2; // 2–4.2px (clearly visible)
+      const dur = 18 + Math.random() * 18; // slower fall
       const delay = -Math.random() * dur;
       const drift = (Math.random() - 0.5) * 36;
-      const opacity = 0.15 + Math.random() * 0.35;
+      const opacity = 0.35 + Math.random() * 0.35;
 
       flake.style.left = `${x}vw`;
       flake.style.setProperty("--size", `${size}px`);
