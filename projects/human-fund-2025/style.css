@@ -1,27 +1,29 @@
 /*
   Human Fund 2025 (isolated design system)
   ---------------------------------------
-  Goal: "Corporate holiday impact report" + "liminal office"
+  Goal: dark, corporate-liminal Christmas
   - Rigid grid, strict spacing rhythm, precise typography
-  - Off-white dashboard, near-black text
+  - Matte charcoal / deep navy background
   - Restrained accents: evergreen + burgundy
   - Subtle vignette + low-opacity noise overlay
+  - Premium “string lights” trim + optional gentle snow overlay
 */
 
 :root{
   /* Color palette */
-  --hf-bg: #f4f4f2;
-  --hf-surface: #fbfbfa;
-  --hf-surface-2: #f0f0ee;
-  --hf-text: #121316;
-  --hf-muted: rgba(18,19,22,.72);
-  --hf-faint: rgba(18,19,22,.56);
-  --hf-border: rgba(18,19,22,.14);
-  --hf-shadow: 0 18px 44px rgba(18,19,22,.08);
+  --hf-bg: #0b0f14;
+  --hf-surface: #0f1620;
+  --hf-surface-2: #121b26;
+  --hf-text: rgba(255,255,255,.92);
+  --hf-muted: rgba(255,255,255,.70);
+  --hf-faint: rgba(255,255,255,.52);
+  --hf-border: rgba(255,255,255,.12);
+  --hf-shadow: 0 18px 52px rgba(0,0,0,.55);
 
   /* Restrained holiday accents */
   --hf-evergreen: #1f4b3a;
   --hf-burgundy: #6b1d2b;
+  --hf-ice: #7aa6b6;
 
   /* Typography */
   --hf-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
@@ -41,7 +43,7 @@
 }
 
 *{ box-sizing: border-box; }
-html{ color-scheme: light; }
+html{ color-scheme: dark; }
 body{
   margin: 0;
   font-family: var(--hf-sans);
@@ -59,12 +61,12 @@ body::before{
   z-index: 0;
   /* Low-cost “grain”: layered gradients (no external images) */
   background:
-    radial-gradient(1200px 700px at 20% 10%, rgba(31,75,58,.08), transparent 60%),
-    radial-gradient(900px 600px at 85% 20%, rgba(107,29,43,.06), transparent 58%),
-    radial-gradient(900px 500px at 50% 105%, rgba(18,19,22,.06), transparent 62%),
-    repeating-linear-gradient(0deg, rgba(0,0,0,.02) 0 1px, rgba(255,255,255,0) 1px 3px);
-  mix-blend-mode: multiply;
-  opacity: .55;
+    radial-gradient(1000px 620px at 20% 0%, rgba(31,75,58,.22), transparent 60%),
+    radial-gradient(900px 520px at 88% 10%, rgba(107,29,43,.18), transparent 58%),
+    radial-gradient(850px 520px at 55% 110%, rgba(122,166,182,.10), transparent 62%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.02) 0 1px, rgba(0,0,0,0) 1px 3px);
+  mix-blend-mode: screen;
+  opacity: .35;
 }
 body::after{
   content: "";
@@ -72,8 +74,10 @@ body::after{
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  background: radial-gradient(circle at 50% 40%, transparent 55%, rgba(0,0,0,.09) 100%);
-  opacity: .55;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(255,255,255,.04), transparent 48%),
+    radial-gradient(circle at 50% 40%, transparent 56%, rgba(0,0,0,.55) 100%);
+  opacity: .72;
 }
 
 main, header, footer{ position: relative; z-index: 1; }
@@ -86,8 +90,8 @@ a{ color: inherit; }
   top: 10px;
   padding: 10px 12px;
   border-radius: 999px;
-  background: var(--hf-surface);
-  border: 1px solid var(--hf-border);
+  background: rgba(18,27,38,.92);
+  border: 1px solid rgba(255,255,255,.14);
   transform: translateY(-140%);
   transition: transform 160ms ease;
   z-index: 5;
@@ -103,7 +107,7 @@ a{ color: inherit; }
   position: sticky;
   top: 0;
   z-index: 3;
-  background: rgba(244,244,242,.88);
+  background: rgba(11,15,20,.78);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--hf-border);
 }
@@ -115,6 +119,7 @@ a{ color: inherit; }
   align-items: center;
   justify-content: space-between;
   gap: var(--hf-2);
+  position: relative;
 }
 .hf-brand{
   display: inline-flex;
@@ -125,8 +130,8 @@ a{ color: inherit; }
   width: 14px;
   height: 14px;
   border-radius: 3px;
-  background: linear-gradient(135deg, var(--hf-evergreen), var(--hf-burgundy));
-  box-shadow: 0 8px 18px rgba(18,19,22,.12);
+  background: linear-gradient(135deg, rgba(31,75,58,.95), rgba(107,29,43,.9));
+  box-shadow: 0 10px 24px rgba(0,0,0,.55);
 }
 .hf-brand-title{
   font-family: var(--hf-mono);
@@ -153,8 +158,52 @@ a{ color: inherit; }
   padding: 8px 10px;
   border-radius: 999px;
   border: 1px solid var(--hf-border);
-  background: rgba(255,255,255,.75);
-  color: rgba(18,19,22,.80);
+  background: rgba(255,255,255,.05);
+  color: rgba(255,255,255,.78);
+}
+
+/*
+  Premium “string lights” trim
+  - Subtle bulbs with glow, low saturation
+  - Implemented as a pseudo-element so it stays decorative
+*/
+.hf-topbar::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 18px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12px 50%, rgba(122,166,182,.75), rgba(122,166,182,0) 55%),
+    radial-gradient(circle at 44px 50%, rgba(31,75,58,.75), rgba(31,75,58,0) 55%),
+    radial-gradient(circle at 76px 50%, rgba(107,29,43,.70), rgba(107,29,43,0) 55%),
+    radial-gradient(circle at 108px 50%, rgba(122,166,182,.65), rgba(122,166,182,0) 55%),
+    radial-gradient(circle at 140px 50%, rgba(31,75,58,.70), rgba(31,75,58,0) 55%);
+  background-size: 160px 18px;
+  background-repeat: repeat-x;
+  filter: blur(.2px);
+  opacity: .38;
+}
+.hf-topbar::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 18px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12px 50%, rgba(122,166,182,.35), transparent 62%),
+    radial-gradient(circle at 44px 50%, rgba(31,75,58,.35), transparent 62%),
+    radial-gradient(circle at 76px 50%, rgba(107,29,43,.32), transparent 62%),
+    radial-gradient(circle at 108px 50%, rgba(122,166,182,.28), transparent 62%),
+    radial-gradient(circle at 140px 50%, rgba(31,75,58,.30), transparent 62%);
+  background-size: 160px 18px;
+  background-repeat: repeat-x;
+  filter: blur(4px);
+  opacity: .28;
 }
 
 .hf-shell{
@@ -196,7 +245,7 @@ a{ color: inherit; }
 }
 
 .hf-card{
-  background: rgba(251,251,250,.92);
+  background: rgba(15,22,32,.92);
   border: 1px solid var(--hf-border);
   border-radius: var(--hf-radius);
   box-shadow: var(--hf-shadow);
@@ -232,15 +281,15 @@ a{ color: inherit; }
   width: 100%;
   padding: 12px 14px;
   border-radius: 10px;
-  border: 1px solid rgba(18,19,22,.18);
-  background: #ffffff;
-  color: var(--hf-text);
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(11,15,20,.55);
+  color: rgba(255,255,255,.92);
   font: inherit;
 }
-.hf-input::placeholder{ color: rgba(18,19,22,.40); }
+.hf-input::placeholder{ color: rgba(255,255,255,.42); }
 .hf-help{
   font-size: 12px;
-  color: var(--hf-faint);
+  color: rgba(255,255,255,.56);
 }
 
 .hf-actions{
@@ -250,9 +299,9 @@ a{ color: inherit; }
 }
 .hf-btn{
   appearance: none;
-  border: 1px solid rgba(18,19,22,.18);
-  background: var(--hf-surface-2);
-  color: rgba(18,19,22,.88);
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(18,27,38,.72);
+  color: rgba(255,255,255,.84);
   border-radius: 999px;
   padding: 10px 14px;
   font-family: var(--hf-mono);
@@ -264,15 +313,15 @@ a{ color: inherit; }
 }
 .hf-btn:hover{
   transform: translateY(-1px);
-  background: #ffffff;
-  border-color: rgba(18,19,22,.24);
+  background: rgba(18,27,38,.92);
+  border-color: rgba(255,255,255,.20);
 }
 .hf-btn-primary{
-  border-color: rgba(31,75,58,.28);
-  background: rgba(31,75,58,.10);
+  border-color: rgba(31,75,58,.38);
+  background: rgba(31,75,58,.18);
 }
 .hf-btn-primary:hover{
-  background: rgba(31,75,58,.14);
+  background: rgba(31,75,58,.24);
 }
 
 .hf-results{
@@ -283,11 +332,11 @@ a{ color: inherit; }
   letter-spacing: .12em;
   text-transform: uppercase;
   font-size: 12px;
-  color: rgba(18,19,22,.78);
+  color: rgba(255,255,255,.78);
 }
 .hf-placeholder-sub{
   margin-top: 8px;
-  color: var(--hf-faint);
+  color: rgba(255,255,255,.52);
   font-size: 13px;
 }
 
@@ -311,7 +360,7 @@ a{ color: inherit; }
   align-items: baseline;
   justify-content: space-between;
   gap: var(--hf-2);
-  border-bottom: 1px solid rgba(18,19,22,.10);
+  border-bottom: 1px solid rgba(255,255,255,.10);
   padding-bottom: var(--hf-2);
 }
 .hf-report-title{
@@ -322,7 +371,7 @@ a{ color: inherit; }
   font-family: var(--hf-mono);
 }
 .hf-report-id{
-  color: var(--hf-faint);
+  color: rgba(255,255,255,.52);
   font-family: var(--hf-mono);
   font-size: 12px;
   letter-spacing: .08em;
@@ -337,22 +386,22 @@ a{ color: inherit; }
   grid-template-columns: 160px 1fr;
   gap: var(--hf-2);
   padding: 10px 0;
-  border-bottom: 1px dashed rgba(18,19,22,.10);
+  border-bottom: 1px dashed rgba(255,255,255,.12);
 }
 .hf-k{
   font-family: var(--hf-mono);
   font-size: 11px;
   letter-spacing: .10em;
   text-transform: uppercase;
-  color: var(--hf-faint);
+  color: rgba(255,255,255,.52);
 }
 .hf-v{
-  color: rgba(18,19,22,.90);
+  color: rgba(255,255,255,.86);
 }
 .hf-outcomes{
   margin: 0;
   padding-left: 18px;
-  color: rgba(18,19,22,.82);
+  color: rgba(255,255,255,.78);
 }
 .hf-outcomes li{ margin: 8px 0; }
 
@@ -366,18 +415,18 @@ a{ color: inherit; }
 }
 .hf-chart{
   width: 100%;
-  border: 1px solid rgba(18,19,22,.12);
+  border: 1px solid rgba(255,255,255,.12);
   border-radius: 12px;
-  background: rgba(255,255,255,.8);
+  background: rgba(11,15,20,.45);
   padding: var(--hf-2);
 }
 
 .hf-error{
-  border-left: 3px solid rgba(107,29,43,.55);
-  background: rgba(107,29,43,.06);
+  border-left: 3px solid rgba(107,29,43,.62);
+  background: rgba(107,29,43,.10);
   padding: var(--hf-2);
   border-radius: 10px;
-  color: rgba(18,19,22,.86);
+  color: rgba(255,255,255,.86);
 }
 .hf-error-title{
   margin: 0 0 6px;
@@ -389,7 +438,7 @@ a{ color: inherit; }
 
 .hf-footer{
   border-top: 1px solid var(--hf-border);
-  background: rgba(244,244,242,.85);
+  background: rgba(11,15,20,.70);
 }
 .hf-footer-inner{
   padding: var(--hf-3) var(--hf-gutter);
@@ -400,7 +449,7 @@ a{ color: inherit; }
   justify-content: space-between;
 }
 .hf-footer-left{
-  color: var(--hf-faint);
+  color: rgba(255,255,255,.48);
   font-size: 12px;
   font-family: var(--hf-mono);
   letter-spacing: .06em;
@@ -410,18 +459,103 @@ a{ color: inherit; }
   display: inline-flex;
   gap: 10px;
   align-items: center;
-  color: rgba(18,19,22,.72);
+  color: rgba(255,255,255,.62);
   font-size: 12px;
 }
 .hf-link{
-  color: rgba(18,19,22,.82);
+  color: rgba(255,255,255,.78);
   text-decoration: none;
-  border-bottom: 1px solid rgba(18,19,22,.20);
+  border-bottom: 1px solid rgba(255,255,255,.22);
 }
 .hf-link:hover{
-  border-bottom-color: rgba(31,75,58,.55);
+  border-bottom-color: rgba(31,75,58,.65);
 }
 .hf-dot{ opacity: .55; }
+
+/* Footer toggle button should look like a link but behave like a control */
+.hf-toggle{
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Snow overlay */
+.hf-snow{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2; /* above content base, but subtle */
+  opacity: .55;
+}
+.hf-snowflake{
+  position: absolute;
+  top: -10vh;
+  left: 0;
+  width: var(--size, 2px);
+  height: var(--size, 2px);
+  border-radius: 50%;
+  background: rgba(255,255,255,.6);
+  box-shadow: 0 0 10px rgba(255,255,255,.22);
+  transform: translateX(var(--x, 0));
+  animation: hf-snow-fall var(--dur, 10s) linear var(--delay, 0s) infinite;
+}
+@keyframes hf-snow-fall{
+  0%{ transform: translate(var(--x, 0), -10vh); opacity: 0; }
+  10%{ opacity: .9; }
+  100%{ transform: translate(calc(var(--x, 0) + var(--drift, 18px)), 112vh); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce){
+  .hf-snow{ display: none; }
+}
+
+/* Supplemental media (attachments) */
+.hf-attachments{
+  display: grid;
+  gap: var(--hf-2);
+}
+.hf-attach-grid{
+  display: grid;
+  gap: var(--hf-2);
+}
+@media (min-width: 760px){
+  .hf-attach-grid{ grid-template-columns: 1fr 1fr; }
+}
+.hf-attach{
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 12px;
+  background: rgba(11,15,20,.35);
+  overflow: hidden;
+}
+.hf-attach-head{
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  font-family: var(--hf-mono);
+  font-size: 11px;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.72);
+}
+.hf-attach-body{
+  padding: 12px;
+}
+.hf-attach img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.25);
+}
+.hf-attach-cap{
+  margin-top: 10px;
+  font-size: 12px;
+  color: rgba(255,255,255,.58);
+}
 
 @media (max-width: 520px){
   .hf-kv-row{ grid-template-columns: 1fr; }
