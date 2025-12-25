@@ -208,6 +208,56 @@
       "Documented 1 repeatable process for tasteful seasonal ambiance"
     ],
     "chartData": { "labels": ["R&D", "Taste", "Stability", "Documentation"], "values": [85, 72, 78, 66] }
+  },
+  "remy": {
+    "causeTitle": "Non-Human Operational Entity Performance Enablement",
+    "amount": 12121,
+    "stats": [
+      "Completed 14 perimeter inspections with industry-leading tail-wag compliance",
+      "Achieved a 99.2% treat-to-task conversion rate (rolling 7-day average)",
+      "Reduced unattended sock exposure by 31% through proactive retrieval"
+    ],
+    "chartData": { "labels": ["Patrol", "Focus", "Retrieval", "Morale"], "values": [84, 61, 79, 88] }
+  },
+  "bear": {
+    "causeTitle": "Enterprise Squirrel Deterrence & Yard Security Program",
+    "amount": 88008,
+    "stats": [
+      "Neutralized 9 potential squirrel incidents via rapid-response barking protocol",
+      "Improved fence-line uptime to 97% despite weather volatility",
+      "Maintained stakeholder warmth through controlled lap-occupation initiatives"
+    ],
+    "chartData": { "labels": ["Security", "Response", "Coverage", "Warmth"], "values": [86, 83, 74, 90] }
+  },
+  "lucy": {
+    "causeTitle": "Canine Customer Success & Greeting Standardization",
+    "amount": 23230,
+    "stats": [
+      "Delivered 22 compliant greetings with zero missed attendees",
+      "Increased doorway acknowledgment throughput by 44%",
+      "Achieved best-in-class ear-perk readiness across all shifts"
+    ],
+    "chartData": { "labels": ["Greetings", "Readiness", "Consistency", "Delight"], "values": [88, 76, 81, 85] }
+  },
+  "bella": {
+    "causeTitle": "Holiday Packaging Integrity (Wrapping Paper QA)",
+    "amount": 34340,
+    "stats": [
+      "Identified 6 wrapping vulnerabilities using advanced nose-based analytics",
+      "Reduced ribbon entanglement risk by 18% via controlled snout intervention",
+      "Validated all gift corners to approved chew-resistance thresholds"
+    ],
+    "chartData": { "labels": ["QA", "Precision", "Control", "Risk"], "values": [79, 72, 77, 68] }
+  },
+  "jack": {
+    "causeTitle": "Floor-Crumb Recovery & Snack-Resilience Operations",
+    "amount": 70770,
+    "stats": [
+      "Recovered 94% of dropped snack artifacts within SLA",
+      "Maintained corridor patrol cadence across 5 high-traffic zones",
+      "Improved morale via strategic sigh deployment (limited, high impact)"
+    ],
+    "chartData": { "labels": ["Recovery", "Coverage", "Speed", "Calm"], "values": [91, 78, 74, 82] }
   }
 }
 
