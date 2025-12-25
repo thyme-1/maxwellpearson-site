@@ -11,6 +11,8 @@
   const input = document.getElementById("hf-name");
   const results = document.getElementById("hf-results");
   const resetBtn = document.getElementById("hf-reset");
+  const snowRoot = document.getElementById("hf-snow");
+  const snowToggle = document.getElementById("hf-snow-toggle");
 
   /**
    * Data shape:
@@ -298,7 +300,7 @@
         const labelX = pad.left + i * barW + barW / 2;
         return `
           <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" fill="rgba(31,75,58,.55)"></rect>
-          <text x="${labelX}" y="${height - 16}" text-anchor="middle" font-size="11" fill="rgba(18,19,22,.74)" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace">${escapeHtml(labels[i])}</text>
+          <text x="${labelX}" y="${height - 16}" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.68)" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace">${escapeHtml(labels[i])}</text>
         `;
       })
       .join("");
@@ -307,7 +309,7 @@
       <svg viewBox="0 0 ${width} ${height}" width="100%" height="180" role="img" aria-label="${escapeHtml(title)}">
         <title>${escapeHtml(title)}</title>
         <rect x="0" y="0" width="${width}" height="${height}" fill="rgba(255,255,255,.0)"></rect>
-        <line x1="${pad.left}" y1="${pad.top + innerH}" x2="${width - pad.right}" y2="${pad.top + innerH}" stroke="rgba(18,19,22,.14)" />
+        <line x1="${pad.left}" y1="${pad.top + innerH}" x2="${width - pad.right}" y2="${pad.top + innerH}" stroke="rgba(255,255,255,.16)" />
         ${bars}
       </svg>
     `;
@@ -315,9 +317,79 @@
     containerEl.innerHTML = svg;
   }
 
-  function renderReport(recipientName, entry) {
+  function renderSupplementalMedia(firstNameKey) {
+    // TODO: Drop the referenced files into ./assets/ (see assets/README.txt)
+    const cfg =
+      firstNameKey === "ethan"
+        ? {
+            aLabel: "Attachment A",
+            aSrc: "./assets/ethan.gif",
+            aAlt: "Supplemental media attachment (animated) for Ethan.",
+            aCap: "Animated excerpt: Seasonal systems interoperability (limited release).",
+            bLabel: "Attachment B",
+            bSrc: "./assets/ethan.png",
+            bAlt: "Supplemental media attachment (static) for Ethan.",
+            bCap: "Static exhibit: Approved dashboard capture (redacted)."
+          }
+        : {
+            aLabel: "Attachment A",
+            aSrc: "./assets/alex.gif",
+            aAlt: "Supplemental media attachment (animated) for Alex.",
+            aCap: "Animated excerpt: Synergy enablement visualization (internal).",
+            bLabel: "Attachment B",
+            bSrc: "./assets/alex.png",
+            bAlt: "Supplemental media attachment (static) for Alex.",
+            bCap: "Static exhibit: Allocation worksheet (sanitized for distribution)."
+          };
+
+    return `
+      <div class="hf-attachments">
+        <div class="hf-chart-title">Supplemental Media</div>
+        <div class="hf-attach-grid" role="list">
+          ${renderAttachmentHtml(cfg.aLabel, cfg.aSrc, cfg.aAlt, cfg.aCap)}
+          ${renderAttachmentHtml(cfg.bLabel, cfg.bSrc, cfg.bAlt, cfg.bCap)}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderAttachmentHtml(label, src, alt, caption) {
+    // We intentionally render images with an onerror handler that swaps to an "unavailable" placeholder
+    // so missing local assets don't show broken image icons.
+    const safeLabel = escapeHtml(label);
+    const safeSrc = escapeHtml(src);
+    const safeAlt = escapeHtml(alt);
+    const safeCap = escapeHtml(caption);
+    return `
+      <figure class="hf-attach" role="listitem">
+        <div class="hf-attach-head">
+          <span>${safeLabel}</span>
+          <span style="color: rgba(255,255,255,.55)">${escapeHtml(src.replace("./assets/", ""))}</span>
+        </div>
+        <div class="hf-attach-body">
+          <img
+            src="${safeSrc}"
+            alt="${safeAlt}"
+            loading="lazy"
+            onerror="this.closest('figure').querySelector('[data-fallback]').hidden=false; this.remove();"
+          />
+          <div data-fallback hidden style="border:1px dashed rgba(255,255,255,.18); border-radius:8px; padding:12px; color:rgba(255,255,255,.62); font-size:12px;">
+            Attachment unavailable. <span style="color:rgba(255,255,255,.48)">TODO:</span> add <code style="color:rgba(255,255,255,.78)">${safeSrc.replace("./", "")}</code>.
+          </div>
+          <figcaption class="hf-attach-cap">${safeCap}</figcaption>
+        </div>
+      </figure>
+    `;
+  }
+
+  function renderReport(recipientName, entry, firstNameKey) {
     const stats = Array.isArray(entry?.stats) ? entry.stats : [];
     const outcomes = stats.slice(0, 3).map((s) => `<li>${escapeHtml(s)}</li>`).join("");
+
+    const media =
+      firstNameKey === "ethan" || firstNameKey === "alex"
+        ? renderSupplementalMedia(firstNameKey)
+        : "";
 
     results.innerHTML = `
       <div class="hf-report">
@@ -351,6 +423,8 @@
           <div class="hf-chart-title">Performance Index</div>
           <div class="hf-chart" id="hf-chart"></div>
         </div>
+
+        ${media}
       </div>
     `;
 
@@ -390,6 +464,57 @@
     }
   }
 
+  /* Snow overlay (optional, subtle, reduced-motion aware) */
+  const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  let snowEnabled = !prefersReduced; // default On unless reduced-motion
+  let snowFlakes = [];
+
+  function updateSnowToggleLabel() {
+    if (!snowToggle) return;
+    if (prefersReduced) {
+      snowToggle.textContent = "Snow: Off";
+      snowToggle.setAttribute("aria-disabled", "true");
+      snowToggle.disabled = true;
+      return;
+    }
+    snowToggle.textContent = `Snow: ${snowEnabled ? "On" : "Off"}`;
+  }
+
+  function clearSnow() {
+    if (!snowRoot) return;
+    snowFlakes.forEach((el) => el.remove());
+    snowFlakes = [];
+  }
+
+  function startSnow() {
+    if (!snowRoot || !snowEnabled || prefersReduced) return;
+    clearSnow();
+
+    const count = 26; // light density
+    for (let i = 0; i < count; i++) {
+      const flake = document.createElement("span");
+      flake.className = "hf-snowflake";
+
+      // Use CSS vars for randomization; keeps it low-cost.
+      const x = Math.random() * 100;
+      const size = 1 + Math.random() * 2.2;
+      const dur = 10 + Math.random() * 10;
+      const delay = -Math.random() * dur;
+      const drift = (Math.random() - 0.5) * 36;
+      const opacity = 0.15 + Math.random() * 0.35;
+
+      flake.style.left = `${x}vw`;
+      flake.style.setProperty("--size", `${size}px`);
+      flake.style.setProperty("--dur", `${dur}s`);
+      flake.style.setProperty("--delay", `${delay}s`);
+      flake.style.setProperty("--drift", `${drift}px`);
+      flake.style.opacity = String(opacity);
+
+      snowRoot.appendChild(flake);
+      snowFlakes.push(flake);
+    }
+  }
+
   async function loadData() {
     try {
       const res = await fetch("./data.json", { cache: "no-store" });
@@ -402,6 +527,14 @@
   }
 
   resetBtn?.addEventListener("click", resetUi);
+
+  snowToggle?.addEventListener("click", () => {
+    if (prefersReduced) return;
+    snowEnabled = !snowEnabled;
+    updateSnowToggleLabel();
+    if (snowEnabled) startSnow();
+    else clearSnow();
+  });
 
   form?.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -428,8 +561,12 @@
       return;
     }
 
-    renderReport(titleCaseFirstName(key), entry);
+    renderReport(titleCaseFirstName(key), entry, key);
     setResetVisible(true);
   });
+
+  // Init
+  updateSnowToggleLabel();
+  if (snowEnabled) startSnow();
 })();
 
