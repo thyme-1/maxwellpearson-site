@@ -3,109 +3,108 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Human Fund 2025 — Impact Report</title>
+    <title>Human Fund 2025 — Year-End Report</title>
     <meta
       name="description"
-      content="Human Fund 2025: a completely serious annual impact report for totally normal contributions."
+      content="HUMAN FUND — Year-End Report 2025. Internal impact report portal."
     />
     <meta name="robots" content="index,follow" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
-
-    <!-- Keep site styling consistent, then add project-specific rules -->
-    <link rel="stylesheet" href="../../css/styles.css" />
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <a class="skip-link" href="#main">Skip to content</a>
+    <a class="hf-skip" href="#main">Skip to report portal</a>
 
-    <header class="site-header" role="banner">
-      <nav class="nav" aria-label="Primary">
-        <a class="brand" href="../../">
-          <span class="mark" aria-hidden="true"></span>
-          <span>
-            <span class="name">Maxwell Pearson</span>
-            <span class="sub">projects</span>
-          </span>
-        </a>
-
-        <div class="nav-links">
-          <a class="chip primary" href="../">Projects</a>
-          <a class="chip" href="https://github.com/thyme-1" rel="noreferrer">GitHub</a>
-          <a class="chip" href="mailto:mp13967@outlook.com">Contact</a>
-        </div>
-      </nav>
-    </header>
-
-    <main id="main" tabindex="-1">
-      <section class="section bleed">
-        <div class="container">
-          <div class="section-title fade-in">
-            <h2>Human Fund 2025</h2>
-            <p>Annual Impact Report (highly audited, deeply actionable).</p>
-          </div>
-
-          <p class="bio fade-in" style="margin: 0 0 var(--space-3); max-width: 76ch">
-            Welcome to the Human Fund 2025 annual impact report portal. Please enter your name to
-            retrieve your contribution summary and the measurable outcomes it enabled this year.
-          </p>
-
-          <div class="grid grid--hero">
-            <form class="panel fade-in hf-form" id="hf-form" novalidate>
-              <label class="hf-label" for="hf-name">Contributor name</label>
-              <div class="hf-row">
-                <input
-                  class="hf-input"
-                  id="hf-name"
-                  name="name"
-                  type="text"
-                  inputmode="text"
-                  autocomplete="name"
-                  placeholder="e.g., Alex"
-                  required
-                />
-                <button class="btn primary" type="submit">Generate report</button>
-              </div>
-              <p class="hf-help" id="hf-help">
-                Tip: Try “Alex”, “Sam”, “Taylor”, or “Jordan” (demo data).
-              </p>
-            </form>
-
-            <section
-              class="panel fade-in hf-results"
-              id="hf-results"
-              aria-live="polite"
-              aria-label="Impact report results"
-            >
-              <p class="hf-muted">Your report will appear here.</p>
-            </section>
-          </div>
-
-          <div class="divider" aria-hidden="true"></div>
-
-          <p class="fade-in" style="margin: 0">
-            <a class="chip" href="../">Back to Projects</a>
-            <a class="chip" href="../../">Back to main site</a>
-          </p>
-        </div>
-      </section>
-
-      <footer class="section" role="contentinfo">
-        <div class="container">
-          <div class="footer-row fade-in">
-            <div><span id="year">2025</span> Human Fund 2025</div>
-            <div class="social" aria-label="Links">
-              <a href="../" aria-label="Projects">Projects</a>
-              <a href="../../" aria-label="Home">Home</a>
+    <header class="hf-topbar" role="banner">
+      <div class="hf-topbar-inner">
+        <div class="hf-topbar-left">
+          <div class="hf-brand">
+            <span class="hf-mark" aria-hidden="true"></span>
+            <div>
+              <div class="hf-brand-title">HUMAN FUND — YEAR-END REPORT 2025</div>
+              <div class="hf-brand-sub">Prepared by: Human Fund Analytics Division</div>
             </div>
           </div>
         </div>
-      </footer>
+
+        <div class="hf-topbar-right" aria-label="Internal tags">
+          <span class="hf-pill">CONFIDENTIAL / INTERNAL</span>
+          <span class="hf-pill" id="hf-timestamp">Timestamp: —</span>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <div class="hf-shell">
+        <section class="hf-section">
+          <div class="hf-container">
+            <h1 class="hf-h1">Annual Impact Report Portal</h1>
+            <p class="hf-intro">
+              This internal tool generates a standardized summary of contributor allocations and
+              performance indices for the FY2025 reporting cycle. Please provide your identifier
+              below to retrieve the appropriate record.
+            </p>
+
+            <div class="hf-grid">
+              <form class="hf-card hf-form" id="hf-form" novalidate>
+                <div class="hf-field">
+                  <label class="hf-label" for="hf-name">Identifier</label>
+                  <input
+                    class="hf-input"
+                    id="hf-name"
+                    name="name"
+                    type="text"
+                    inputmode="text"
+                    autocomplete="name"
+                    placeholder="Enter first name (e.g., Connor)"
+                    required
+                  />
+                  <div class="hf-help" id="hf-help">
+                    Note: Records are indexed by first name only. Matching is case-insensitive.
+                  </div>
+                </div>
+
+                <div class="hf-actions">
+                  <button class="hf-btn hf-btn-primary" type="submit">Generate Report</button>
+                  <button class="hf-btn" type="button" id="hf-reset" hidden>Try Again</button>
+                </div>
+              </form>
+
+              <section
+                class="hf-card hf-results"
+                id="hf-results"
+                aria-live="polite"
+                aria-label="Impact report results"
+              >
+                <div class="hf-placeholder">
+                  <div class="hf-placeholder-title">Awaiting identifier input</div>
+                  <div class="hf-placeholder-sub">
+                    Reports will render here as an internal-facing compliance artifact.
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </section>
+
+        <footer class="hf-footer" role="contentinfo">
+          <div class="hf-container hf-footer-inner">
+            <div class="hf-footer-left">© <span id="hf-year">2025</span> Human Fund Analytics</div>
+            <div class="hf-footer-right">
+              <a class="hf-link" href="../../">Return to Portfolio</a>
+              <span class="hf-dot" aria-hidden="true">•</span>
+              <a class="hf-link" href="../">Back to Projects</a>
+            </div>
+          </div>
+        </footer>
+      </div>
     </main>
 
-    <script src="../../js/main.js"></script>
     <script src="./script.js"></script>
     <script>
-      document.getElementById("year").textContent = String(new Date().getFullYear());
+      document.getElementById("hf-year").textContent = String(new Date().getFullYear());
+      document.getElementById("hf-timestamp").textContent =
+        "Timestamp: " + new Date().toISOString().replace("T", " ").slice(0, 19) + "Z";
     </script>
   </body>
 </html>
